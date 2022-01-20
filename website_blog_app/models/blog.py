@@ -8,6 +8,7 @@ import ast
 import json
 import re
 _logger = logging.getLogger(__name__)
+import traceback
 
 
 class Blog(models.Model):
@@ -43,6 +44,7 @@ class BlogPost(models.Model):
         if self.app_project and self.app_module:
             module_url = f"{git_url}/{self.app_project}/raw/{self.app_tree}/{self.app_module}"
             # get icon
+
             icon_data, icon_name = self._wget_sync(f"{module_url}/static/description/icon.png")
             if icon_data and icon_name:
                 self.app_icon = self._create_attachment(icon_data, icon_name)
@@ -59,17 +61,19 @@ class BlogPost(models.Model):
             manifest_obj = urllib.request.urlopen(manifest_url)
             print(re.search(b'category', manifest_obj.read()).group())
         except Exception as e:
-            _logger.warning(e)
-            raise UserError(f'Something went wrong, exception: {e}')
+            _logger.warning("".join(traceback.format_exc()))
+            return None,None
 
     def _wget_sync(self, url):
+        _logger.warning(f"{url=}")
         try:
             file_obj = urllib.request.urlopen(url)
+            _logger.warning(f"{file_obj=}")
             file_name = os.path.basename(url)
+            _logger.warning(f"{file_name=}")
             return file_obj, file_name
         except Exception as e:
-            _logger.warning(e)
-            raise UserError(f'Something went wrong, exception: {e}')
-
+            _logger.warning("".join(traceback.format_exc()))
+            return None,None
     def _create_attachment(self, datas, name):
         return base64.encodebytes(datas.read())
