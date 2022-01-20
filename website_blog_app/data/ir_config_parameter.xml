@@ -1,0 +1,8 @@
+<odoo>
+    <data noupdate="1">
+        <record id="github_base_url" model="ir.config_parameter">
+            <field name="key">GitHubBaseUrl</field>
+            <field name="value"></field>
+        </record>
+    </data>
+</odoo>

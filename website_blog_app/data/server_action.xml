@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="sync_git_module" model="ir.actions.server">
+            <field name="name">Sync Module</field>
+            <field name="model_id" ref="website_blog_app.model_blog_post"/>
+            <field name="binding_model_id" ref="website_blog.model_blog_post"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">action = records.sync_module()</field>
+        </record>
+    </data>
+</odoo>
