@@ -13,6 +13,7 @@
     'depends': ['website_blog'],
     'data': [
         'views/website_blog_view.xml',
+        'views/website_blog_templates.xml',
         'data/ir_config_parameter.xml',
         'data/server_action.xml',
     ],
