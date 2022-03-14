@@ -14,8 +14,10 @@
     'data': [
         'views/website_blog_view.xml',
         'views/website_blog_templates.xml',
+        'views/app_templates.xml',
         'data/ir_config_parameter.xml',
         'data/server_action.xml',
+        'data/data.xml',
     ],
     'installable': True,
     'application': True,

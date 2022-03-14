@@ -101,3 +101,193 @@ class AppWebsiteBlog(WebsiteBlog):
                 request.session.modified = True
         return response
 
+
+    def _prepare_blog_values(self, blogs, blog=False, date_begin=False, date_end=False, tags=False, state=False, page=False, search=None, is_app=False):
+        """ Prepare all values to display the blogs index page or one specific blog"""
+        BlogPost = request.env['blog.post']
+        BlogTag = request.env['blog.tag']
+
+        # prepare domain
+        domain = request.website.website_domain()
+
+        if blog:
+            domain += [('blog_id', '=', blog.id)]
+
+        if date_begin and date_end:
+            domain += [("post_date", ">=", date_begin), ("post_date", "<=", date_end)]
+        active_tag_ids = tags and [unslug(tag)[1] for tag in tags.split(',')] or []
+        active_tags = BlogTag
+        if active_tag_ids:
+            active_tags = BlogTag.browse(active_tag_ids).exists()
+            fixed_tag_slug = ",".join(slug(t) for t in active_tags)
+            if fixed_tag_slug != tags:
+                new_url = request.httprequest.full_path.replace("/tag/%s" % tags, "/tag/%s" % fixed_tag_slug, 1)
+                if new_url != request.httprequest.full_path:  # check that really replaced and avoid loop
+                    return request.redirect(new_url, 301)
+            domain += [('tag_ids', 'in', active_tags.ids)]
+
+        if request.env.user.has_group('website.group_website_designer'):
+            count_domain = domain + [("website_published", "=", True), ("post_date", "<=", fields.Datetime.now())]
+            published_count = BlogPost.search_count(count_domain)
+            unpublished_count = BlogPost.search_count(domain) - published_count
+
+            if state == "published":
+                domain += [("website_published", "=", True), ("post_date", "<=", fields.Datetime.now())]
+            elif state == "unpublished":
+                domain += ['|', ("website_published", "=", False), ("post_date", ">", fields.Datetime.now())]
+        else:
+            domain += [("post_date", "<=", fields.Datetime.now())]
+
+        use_cover = request.website.is_view_active('website_blog.opt_blog_cover_post')
+        fullwidth_cover = request.website.is_view_active('website_blog.opt_blog_cover_post_fullwidth_design')
+
+        # if blog, we show blog title, if use_cover and not fullwidth_cover we need pager + latest always
+        offset = (page - 1) * self._blog_post_per_page
+        first_post = BlogPost
+        if not blog:
+            first_post = BlogPost.search(domain + [('website_published', '=', True)], order="post_date desc, id asc", limit=1)
+            if use_cover and not fullwidth_cover:
+                offset += 1
+
+        if search:
+            tags_like_search = BlogTag.search([('name', 'ilike', search)])
+            domain += ['|', '|', '|', ('author_name', 'ilike', search), ('name', 'ilike', search), ('content', 'ilike', search), ('tag_ids', 'in', tags_like_search.ids)]
+        domain += [('is_app', '=', is_app)]
+        posts = BlogPost.search(domain, offset=offset, limit=self._blog_post_per_page, order="is_published desc, post_date desc, id asc")
+        total = BlogPost.search_count(domain)
+
+        pager = request.website.pager(
+            url=request.httprequest.path.partition('/page/')[0],
+            total=total,
+            page=page,
+            step=self._blog_post_per_page,
+        )
+
+        if not blogs:
+            all_tags = request.env['blog.tag']
+        else:
+            all_tags = blogs.all_tags(join=True) if not blog else blogs.all_tags().get(blog.id, request.env['blog.tag'])
+        tag_category = sorted(all_tags.mapped('category_id'), key=lambda category: category.name.upper())
+        other_tags = sorted(all_tags.filtered(lambda x: not x.category_id), key=lambda tag: tag.name.upper())
+
+        # for performance prefetch the first post with the others
+        post_ids = (first_post | posts).ids
+
+        return {
+            'date_begin': date_begin,
+            'date_end': date_end,
+            'first_post': first_post.with_prefetch(post_ids),
+            'other_tags': other_tags,
+            'tag_category': tag_category,
+            'nav_list': self.nav_list(),
+            'tags_list': self.tags_list,
+            'pager': pager,
+            'posts': posts.with_prefetch(post_ids),
+            'tag': tags,
+            'active_tag_ids': active_tags.ids,
+            'domain': domain,
+            'state_info': state and {"state": state, "published": published_count, "unpublished": unpublished_count},
+            'blogs': blogs,
+            'blog': blog,
+            'search': search,
+            'search_count': total,
+        }
+
+    @http.route([
+        '/blog',
+        '/blog/page/<int:page>',
+        '/blog/tag/<string:tag>',
+        '/blog/tag/<string:tag>/page/<int:page>',
+        '''/blog/<model("blog.blog"):blog>''',
+        '''/blog/<model("blog.blog"):blog>/page/<int:page>''',
+        '''/blog/<model("blog.blog"):blog>/tag/<string:tag>''',
+        '''/blog/<model("blog.blog"):blog>/tag/<string:tag>/page/<int:page>''',
+    ], type='http', auth="public", website=True, sitemap=True)
+    def blog(self, blog=None, tag=None, page=1, search=None, **opt):
+        Blog = request.env['blog.blog']
+        if blog and not blog.can_access_from_current_website():
+            raise werkzeug.exceptions.NotFound()
+
+        domain = request.website.website_domain()
+        domain += [('is_app', '=', False)]
+        blogs = Blog.search(domain, order="create_date asc, id asc")
+
+        if not blog and len(blogs) == 1:
+            return werkzeug.utils.redirect('/blog/%s' % slug(blogs[0]), code=302)
+
+        date_begin, date_end, state = opt.get('date_begin'), opt.get('date_end'), opt.get('state')
+
+        if tag and request.httprequest.method == 'GET':
+            # redirect get tag-1,tag-2 -> get tag-1
+            tags = tag.split(',')
+            if len(tags) > 1:
+                url = QueryURL('' if blog else '/blog', ['blog', 'tag'], blog=blog, tag=tags[0], date_begin=date_begin,
+                               date_end=date_end, search=search)()
+                return request.redirect(url, code=302)
+
+        values = self._prepare_blog_values(blogs=blogs, blog=blog, date_begin=date_begin, date_end=date_end, tags=tag,
+                                           state=state, page=page, search=search, is_app=False)
+
+        # in case of a redirection need by `_prepare_blog_values` we follow it
+        if isinstance(values, werkzeug.wrappers.Response):
+            return values
+
+        if blog:
+            values['main_object'] = blog
+            values['edit_in_backend'] = True
+            values['blog_url'] = QueryURL('', ['blog', 'tag'], blog=blog, tag=tag, date_begin=date_begin,
+                                          date_end=date_end, search=search)
+        else:
+            values['blog_url'] = QueryURL('/blog', ['tag'], date_begin=date_begin, date_end=date_end, search=search)
+
+        return request.render("website_blog.blog_post_short", values)
+
+    @http.route([
+        '/apps',
+        '/apps/page/<int:page>',
+        '/apps/tag/<string:tag>',
+        '/apps/tag/<string:tag>/page/<int:page>',
+        '''/apps/<model("blog.blog"):blog>''',
+        '''/apps/<model("blog.blog"):blog>/page/<int:page>''',
+        '''/apps/<model("blog.blog"):blog>/tag/<string:tag>''',
+        '''/apps/<model("blog.blog"):blog>/tag/<string:tag>/page/<int:page>''',
+    ], type='http', auth="public", website=True, sitemap=True)
+    def blog_apps(self, blog=None, tag=None, page=1, search=None, **opt):
+        Blog = request.env['blog.blog']
+        if blog and not blog.can_access_from_current_website():
+            raise werkzeug.exceptions.NotFound()
+
+        domain = request.website.website_domain()
+        domain += [('is_app', '=', True)]
+        blogs = Blog.search(domain, order="create_date asc, id asc")
+
+        if not blog and len(blogs) == 1:
+            return werkzeug.utils.redirect('/apps/%s' % slug(blogs[0]), code=302)
+
+        date_begin, date_end, state = opt.get('date_begin'), opt.get('date_end'), opt.get('state')
+
+        if tag and request.httprequest.method == 'GET':
+            # redirect get tag-1,tag-2 -> get tag-1
+            tags = tag.split(',')
+            if len(tags) > 1:
+                url = QueryURL('' if blog else '/apps', ['blog', 'tag'], blog=blog, tag=tags[0], date_begin=date_begin,
+                               date_end=date_end, search=search)()
+                return request.redirect(url, code=302)
+
+        values = self._prepare_blog_values(blogs=blogs, blog=blog, date_begin=date_begin, date_end=date_end, tags=tag,
+                                           state=state, page=page, search=search, is_app=True)
+
+        # in case of a redirection need by `_prepare_blog_values` we follow it
+        if isinstance(values, werkzeug.wrappers.Response):
+            return values
+
+        if blog:
+            values['main_object'] = blog
+            values['edit_in_backend'] = True
+            values['blog_url'] = QueryURL('', ['blog', 'tag'], blog=blog, tag=tag, date_begin=date_begin,
+                                          date_end=date_end, search=search)
+        else:
+            values['blog_url'] = QueryURL('/apps', ['tag'], date_begin=date_begin, date_end=date_end, search=search)
+
+        return request.render("website_blog_app.blog_app_post", values)
+        # return request.render("website_blog.blog_post_short", values)
