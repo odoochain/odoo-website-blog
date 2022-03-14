@@ -290,4 +290,3 @@ class AppWebsiteBlog(WebsiteBlog):
             values['blog_url'] = QueryURL('/apps', ['tag'], date_begin=date_begin, date_end=date_end, search=search)
 
         return request.render("website_blog_app.blog_app_post", values)
-        # return request.render("website_blog.blog_post_short", values)
