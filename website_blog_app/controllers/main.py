@@ -23,6 +23,7 @@ class AppWebsiteBlog(WebsiteBlog):
 
     @http.route([
         '''/blog/<model("blog.blog"):blog>/<model("blog.post", "[('blog_id','=',blog.id)]"):blog_post>''',
+        '''/apps/<model("blog.blog"):blog>/<model("blog.post", "[('blog_id','=',blog.id)]"):blog_post>'''
     ], type='http', auth="public", website=True, sitemap=True)
     def blog_post(self, blog, blog_post, tag_id=None, page=1, enable_editor=None, **post):
         """ Prepare all values to display the blog.
@@ -101,7 +102,6 @@ class AppWebsiteBlog(WebsiteBlog):
                 request.session.modified = True
         return response
 
-
     def _prepare_blog_values(self, blogs, blog=False, date_begin=False, date_end=False, tags=False, state=False, page=False, search=None, is_app=False):
         """ Prepare all values to display the blogs index page or one specific blog"""
         BlogPost = request.env['blog.post']
@@ -111,7 +111,7 @@ class AppWebsiteBlog(WebsiteBlog):
         domain = request.website.website_domain()
 
         if blog:
-            domain += [('blog_id', '=', blog.id)]
+            domain += [('blog_id', '=', blog.id), ('is_app', '=', is_app)]
 
         if date_begin and date_end:
             domain += [("post_date", ">=", date_begin), ("post_date", "<=", date_end)]
@@ -145,7 +145,7 @@ class AppWebsiteBlog(WebsiteBlog):
         offset = (page - 1) * self._blog_post_per_page
         first_post = BlogPost
         if not blog:
-            first_post = BlogPost.search(domain + [('website_published', '=', True)], order="post_date desc, id asc", limit=1)
+            first_post = BlogPost.search(domain + [('website_published', '=', True), ('is_app', '=', is_app)], order="post_date desc, id asc", limit=1)
             if use_cover and not fullwidth_cover:
                 offset += 1
 
