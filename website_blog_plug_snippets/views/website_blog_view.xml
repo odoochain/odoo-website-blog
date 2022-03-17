@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+        <record id="blog_blog_form_view_extended" model="ir.ui.view">
+            <field name="name">blog.blog.form</field>
+            <field name="model">blog.blog</field>
+            <field name="inherit_id" ref="website_blog.view_blog_blog_form"/>
+            <field name="arch" type="xml">
+                <field name="website_id" position="after">
+                    <field name="is_app"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="blog_post_form_view_extended" model="ir.ui.view">
+            <field name="name">blog.post.form</field>
+            <field name="model">blog.post</field>
+            <field name="inherit_id" ref="website_blog.view_blog_post_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='seo']" position="after">
+                    <page name="is_app" string="Is App" attrs="{'invisible': [('is_app', '=', False)]}">
+                        <group>
+                            <group>
+                                <field name="is_app" invisible="1"/>
+                                <field name="pod_id"/>
+                                <field name="app_project"/>
+                                <field name="app_module"/>
+                                <field name="app_tree"/>
+                                <field name="app_icon"/>
+                            </group>
+                            <group>
+                                <field name="app_banner"/>
+                                <field name="app_summary"/>
+                                <field name="app_category"/>
+                                <field name="app_manifest"/>
+                            </group>
+                            <label for="app_description"/>
+                            <field name="app_description"/>
+                            <label for="app_index"/>
+                            <field name="app_index"/>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
