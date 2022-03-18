@@ -19,7 +19,7 @@ from odoo.osv import expression
 class AppWebsiteBlog(WebsiteBlog):
 
     @http.route(['/blog/render_plug_posts'], type='json', auth='public', website=True)
-    def render_latest_posts(self, template, domain, limit=None, order='published_date desc'):
+    def render_plug_posts(self, template, domain, limit=None, order='published_date desc'):
         dom = expression.AND([
             [('website_published', '=', True), ('post_date', '<=', fields.Datetime.now()), ('is_plug', '=', True)],
             request.website.website_domain()
