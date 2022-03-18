@@ -33,6 +33,7 @@
                                 <field name="app_summary"/>
                                 <field name="app_category"/>
                                 <field name="app_manifest"/>
+                                <field name="app_license"/>
                             </group>
                             <label for="app_description"/>
                             <field name="app_description"/>

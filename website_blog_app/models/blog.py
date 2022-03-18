@@ -31,6 +31,7 @@ class BlogPost(models.Model):
     app_category = fields.Many2one('ir.module.category', string="Category")
     app_description = fields.Text(string="App Description")
     app_manifest = fields.Char(string="App Manifest")
+    app_license = fields.Char(string="App License")
     app_index = fields.Html(string="App Index")
 
     def sync_module(self):
@@ -54,15 +55,19 @@ class BlogPost(models.Model):
                 self.app_banner = self._create_attachment(banner_data, banner_name)
 
             # manifest file
-            # self._sync_manifest(f"{module_url}/__manifest__.py")
+            self._sync_manifest(f"{module_url}/__manifest__.py")
 
     def _sync_manifest(self, manifest_url):
         try:
-            manifest_obj = urllib.request.urlopen(manifest_url)
-            print(re.search(b'category', manifest_obj.read()).group())
+            manifest_obj = urllib.request.urlopen(manifest_url).read().decode('utf-8')
+            manifest = re.sub(r'(?m)^ *#.*\n?', '', manifest_obj)
+            if manifest:
+                manifest = ast.literal_eval(manifest)
+                self.app_license = manifest.get('license')
+                self.app_summary = manifest.get('summary')
         except Exception as e:
             _logger.warning("".join(traceback.format_exc()))
-            return None,None
+            return None, None
 
     def _wget_sync(self, url):
         _logger.warning(f"{url=}")
@@ -74,6 +79,7 @@ class BlogPost(models.Model):
             return file_obj, file_name
         except Exception as e:
             _logger.warning("".join(traceback.format_exc()))
-            return None,None
+            return None, None
+
     def _create_attachment(self, datas, name):
         return base64.encodebytes(datas.read())
