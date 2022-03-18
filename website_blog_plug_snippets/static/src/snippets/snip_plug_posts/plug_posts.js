@@ -7,8 +7,8 @@ var publicWidget = require('web.public.widget');
 
 var _t = core._t;
 
-publicWidget.registry.js_get_posts = publicWidget.Widget.extend({
-    selector: '.js_get_posts',
+publicWidget.registry.js_get_plug_posts = publicWidget.Widget.extend({
+    selector: '.js_get_plug_posts',
     disabledInEditableMode: false,
 
     /**
@@ -17,13 +17,13 @@ publicWidget.registry.js_get_posts = publicWidget.Widget.extend({
     start: function () {
         var self = this;
         const data = self.$target[0].dataset;
-        const limit = parseInt(data.postsLimit) || 4;
+        const limit = parseInt(data.postsLimit) || 6;
         const blogID = parseInt(data.filterByBlogId);
         // Compatibility with old template xml id
-        if (data.template && data.template.endsWith('.snip_plug_posts_big_orizontal_template')) {
+        if (data.template && data.template.endsWith('.snip_blog_post_big_orizontal')) {
             data.template = 'website_blog_plug_snippets.snip_plug_posts_horizontal_template';
         }
-        const template = data.template || 'website_blog_plug_snippets.s_latest_posts_list_template';
+        const template = data.template || 'website_blog_plug_snippets.snip_blog_post_list_template';
         const loading = data.loading === 'true';
         const order = data.order || 'published_date desc';
 
@@ -48,7 +48,7 @@ publicWidget.registry.js_get_posts = publicWidget.Widget.extend({
                     order: order,
                 },
             }).then(function (posts) {
-                var $posts = $(posts).filter('.s_latest_posts_post');
+                var $posts = $(posts).filter('.snip_blog_post');
                 if (!$posts.length) {
                     self.$target.append($('<div/>', {class: 'col-md-6 offset-md-3'})
                     .append($('<div/>', {
@@ -97,7 +97,7 @@ publicWidget.registry.js_get_posts = publicWidget.Widget.extend({
 
         _.each($posts, function (post, i) {
             var $post = $(post);
-            var $progress = $post.find('.s_latest_posts_loader');
+            var $progress = $post.find('.snip_blog_post_loader');
             var bgUrl = $post.find('.o_record_cover_image').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "") || 'none';
 
             // Append $post to the snippet, regardless by the loading state.
@@ -105,7 +105,7 @@ publicWidget.registry.js_get_posts = publicWidget.Widget.extend({
 
             // No cover-image found. Add a 'flag' class and exit.
             if (bgUrl === 'none') {
-                $post.addClass('s_latest_posts_loader_no_cover');
+                $post.addClass('snip_blog_post_loader_no_cover');
                 $progress.remove();
                 return;
             }

@@ -1,5 +1,5 @@
-.s_latest_posts[data-vcss='001'] {
-    .s_latest_posts_loader {
+.snip_plug_posts[data-vcss='001'] {
+    .snip_blog_post_loader {
         @include o-position-absolute(0, 0, 0, 0);
         transform: translateZ(1px);
 
@@ -9,42 +9,42 @@
         }
     }
 
-    .s_latest_posts_post_title  {
+    .snip_blog_post_title  {
         font-weight: $headings-font-weight;
         // Tweek line-height to help fit multi-line titles.
         line-height: 1;
     }
 
-    .s_latest_posts_post_subtitle {
+    .snip_blog_post_subtitle {
         font-size: 1em;
     }
 
     // The two following rules prevent having an empty spot on medium breakpoint
     // for non-list layouts (lg:3x1, md:2x2, sm: 1x3) list is always 1x3.
-    .s_latest_posts_post:nth-child(4) {
+    .snip_blog_post:nth-child(4) {
         display: none !important;
     }
     @include media-breakpoint-only(md) {
-        :not(.s_latest_posts_list) > .s_latest_posts_post:nth-child(4) {
+        :not(.snip_blog_post_list) > .snip_blog_post:nth-child(4) {
             display: block !important;
         }
     }
 
-    .s_latest_posts_list {
+    .snip_blog_post_list {
         // Set sizes relative to the container font-size.
         // (handle parents with, for example, '.small' or '.h1' classes)
-        .s_latest_posts_post_cover {
+        .snip_blog_post_cover {
             @include size(3.5em);
             max: {width: 85px; height: 85px}
         }
 
-        .s_latest_posts_post_title  {
+        .snip_blog_post_title  {
             font-size: 1.25em;
         }
     }
 
-    .s_latest_posts_big_picture {
-        .s_latest_posts_post {
+    .snip_blog_post_big_picture {
+        .snip_blog_post {
             min-height: 150px;
 
             figcaption {
@@ -52,7 +52,7 @@
                 justify-content: center;
             }
 
-            .s_latest_posts_post_cover {
+            .snip_blog_post_cover {
                 min-height: 100%;
 
                 .o_record_cover_container {
@@ -60,32 +60,32 @@
                 }
             }
 
-            .s_latest_posts_post_title  {
+            .snip_blog_post_title  {
                 @include font-size($h3-font-size);
                 margin-bottom: 0.5em;
                 word-spacing: -0.15em;
             }
         }
 
-        &.js_get_posts {
-            .s_latest_posts_post_subtitle {
+        &.js_get_plug_posts {
+            .snip_blog_post_subtitle {
                 margin: 0;
             }
 
-            &.s_latest_posts_effect_marley {
+            &.snip_blog_post_effect_marley {
                 figcaption {
                     text-align: right;
-                    .s_latest_posts_post_title, .s_latest_posts_post_subtitle {
+                    .snip_blog_post_title, .snip_blog_post_subtitle {
                         padding: 10px 0;
                     }
-                    .s_latest_posts_post_subtitle {
+                    .snip_blog_post_subtitle {
                         bottom: 30px;
                         line-height: 1.5;
                         transform: translate3d(0,100%,0);
                         opacity: 0;
                         transition: opacity 0.35s, transform 0.35s;
                     }
-                    .s_latest_posts_post_title {
+                    .snip_blog_post_title {
                         top: 30px;
                         transition: transform 0.35s;
                         transform: translate3d(0,20px,0);
@@ -101,17 +101,17 @@
                         }
                     }
                 }
-                .s_latest_posts_post:hover figcaption {
-                    .s_latest_posts_post_title {
+                .snip_blog_post:hover figcaption {
+                    .snip_blog_post_title {
                         transform: translate3d(0,0,0);
                     }
-                    .s_latest_posts_post_title::after, .s_latest_posts_post_subtitle {
+                    .snip_blog_post_title::after, .snip_blog_post_subtitle {
                         opacity: 1;
                         transform: translate3d(0,0,0);
                     }
                 }
             }
-            &.s_latest_posts_effect_dexter .s_latest_posts_post {
+            &.snip_blog_post_effect_dexter .snip_blog_post {
                 &::before {
                     content: "";
                     @include o-position-absolute(0, $grid-gutter-width/2, 0, $grid-gutter-width/2);
@@ -134,13 +134,13 @@
                         transform-origin: top;
                     }
                 }
-                .s_latest_posts_post_subtitle {
+                .snip_blog_post_subtitle {
                     @include o-position-absolute(auto, 20px, 20px, 20px);
                     opacity: 0;
                     transition: opacity 0.35s linear, transform 0.35s;
                     transform: translate3d(0,-100px,0);
                 }
-                .s_latest_posts_post_title {
+                .snip_blog_post_title {
                     @include o-position-absolute(20px, 20px, auto, 20px);
                 }
                 &:hover {
@@ -150,18 +150,18 @@
                     figcaption::after {
                         transform-origin: bottom;
                     }
-                    .s_latest_posts_post_subtitle {
+                    .snip_blog_post_subtitle {
                         opacity: 1;
                         transform: translate3d(0, 0, 0);
                     }
                 }
             }
-            &.s_latest_posts_effect_chico {
+            &.snip_blog_post_effect_chico {
                 .o_record_cover_image {
                     transition: opacity 0.35s, transform 0.35s;
                     transform: scale(1.12);
                 }
-                .s_latest_posts_post figcaption {
+                .snip_blog_post figcaption {
                     &::before {
                         @include o-position-absolute(15px,15px,15px,15px);
                         border: 1px solid #fff;
@@ -171,7 +171,7 @@
                         transition: opacity 0.35s, transform 0.35s;
                     }
                 }
-                .s_latest_posts_post_subtitle {
+                .snip_blog_post_subtitle {
                     opacity: 0;
                     transition: opacity 0.35s, transform 0.35s;
                     margin-left: auto;
@@ -179,14 +179,14 @@
                     max-width: 200px;
                     transform: scale(1.5);
                 }
-                .s_latest_posts_post_title {
+                .snip_blog_post_title {
                     padding: 0;
                 }
-                .s_latest_posts_post:hover {
+                .snip_blog_post:hover {
                     .o_record_cover_image {
                         transform: scale(1);
                     }
-                    figcaption::before, .s_latest_posts_post_subtitle {
+                    figcaption::before, .snip_blog_post_subtitle {
                         opacity: 1;
                         transform: scale(1);
                     }
@@ -195,18 +195,18 @@
         }
     }
 
-    .s_latest_posts_horizontal {
+    .snip_blog_post_horizontal {
         .o_record_cover_container {
             width: auto;
             height: auto;
             padding: 0;
         }
 
-        &.js_get_posts {
+        &.js_get_plug_posts {
             position: relative;
             overflow: visible;
             text-align: left;
-            .s_latest_posts_post {
+            .snip_blog_post {
                 position: relative;
                 figcaption:after {
                     position: relative;
@@ -275,12 +275,12 @@
         }
     }
 
-    .s_latest_posts_card {
+    .snip_blog_post_card {
         .card {
             height: 100%;
             box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.17);
 
-            .s_latest_posts_post_cover {
+            .snip_blog_post_cover {
                 height: 170px;
 
                 .o_record_cover_container {

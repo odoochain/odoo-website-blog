@@ -13,8 +13,6 @@
     'depends': ['website_blog'],
     'data': [
         'views/website_blog_view.xml',
-        'views/website_blog_templates.xml',
-        'views/app_templates.xml',
         'views/snippets/snippets.xml',
         'views/snippets/snip_plug_posts.xml',
     ],

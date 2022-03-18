@@ -2,9 +2,9 @@
 <odoo>
 <!-- Snippet -->
 <template id="snip_plug_posts" name="Blog Plug Posts">
-    <section class="s_latest_posts pt16 pb16" data-vcss="001">
+    <section class="snip_plug_posts pt16 pb16" data-vcss="001">
         <div class="container">
-            <div class="row s_col_no_bgcolor s_nb_column_fixed js_get_posts s_latest_posts_big_picture s_latest_posts_effect_marley"
+            <div class="row s_col_no_bgcolor s_nb_column_fixed js_get_plug_posts toggle_plug_filtering snip_blog_post_big_picture snip_blog_post_effect_marley"
                 data-loading="true"
                 data-template="website_blog_plug_snippets.snip_plug_posts_big_picture_template"
                 data-filter-by-blog-id="0"
@@ -16,29 +16,29 @@
 <!-- Load-time templates (rendered in JS on page load) -->
 <!-- List layout -->
 <template id="snip_plug_posts_list_template">
-    <div t-foreach="posts" t-as="p" class="d-flex col-12 mt-3 s_latest_posts_post">
-        <a class="s_latest_posts_post_cover flex-grow-0 flex-shrink-0 align-self-baseline position-relative" t-attf-href="/blog/#{p.blog_id.id}/#{p.id}" t-att-title="'Read' + p.name">
+    <div t-foreach="posts" t-as="p" class="d-flex col-12 mt-3 snip_blog_post">
+        <a class="snip_blog_post_cover flex-grow-0 flex-shrink-0 align-self-baseline position-relative" t-attf-href="/blog/#{p.blog_id.id}/#{p.id}" t-att-title="'Read' + p.name">
             <t t-call="website.record_cover">
                 <t t-set="_record" t-value="p"/>
                 <t t-set="additionnal_classes" t-value="'w-100 h-100 bg-200 position-absolute'"/>
 
-                <div class="s_latest_posts_loader d-flex align-items-center justify-content-center bg-200">
+                <div class="snip_blog_post_loader d-flex align-items-center justify-content-center bg-200">
                     <div class="d-none rounded-circle bg-black-25 w-25 h-25"/>
                 </div>
             </t>
         </a>
         <div class="pl-2">
             <a class="" t-att-title="'Read' + p.name" t-attf-href="/blog/#{p.blog_id.id}/#{p.id}">
-                <div class="s_latest_posts_post_title mb-1" t-field="p.name"/>
+                <div class="snip_blog_post_title mb-1" t-field="p.name"/>
             </a>
-            <div class="s_latest_posts_post_subtitle mb-1 d-none d-sm-block" t-field="p.subtitle"/>
+            <div class="snip_blog_post_subtitle mb-1 d-none d-sm-block" t-field="p.subtitle"/>
         </div>
     </div>
 </template>
 <!-- Big picture layout -->
 <template id="snip_plug_posts_big_picture_template">
-    <figure t-foreach="posts" t-as="p" class="col-md-6 col-lg-4 my-3 s_latest_posts_post">
-        <a class="s_latest_posts_post_cover position-relative d-flex flex-column shadow-sm overflow-hidden rounded text-decoration-none" t-attf-href="/blog/#{p.blog_id.id}/#{p.id}">
+    <figure t-foreach="posts" t-as="p" class="col-md-6 col-lg-4 my-3 snip_blog_post">
+        <a class="snip_blog_post_cover position-relative d-flex flex-column shadow-sm overflow-hidden rounded text-decoration-none" t-attf-href="/blog/#{p.blog_id.id}/#{p.id}">
             <t t-call="website.record_cover">
                 <t t-set="_record" t-value="p"/>
                 <t t-set="use_filters" t-value="True"/>
@@ -46,11 +46,11 @@
             </t>
 
             <figcaption class="text-center w-100 h-100 px-3 d-flex flex-column flex-grow-1">
-                <div class="s_latest_posts_post_title text-white" t-field="p.name"/>
-                <div class="s_latest_posts_post_subtitle text-white" t-field="p.subtitle"/>
+                <div class="snip_blog_post_title text-white" t-field="p.name"/>
+                <div class="snip_blog_post_subtitle text-white" t-field="p.subtitle"/>
             </figcaption>
 
-            <div class="s_latest_posts_loader d-flex align-items-center justify-content-center bg-200">
+            <div class="snip_blog_post_loader d-flex align-items-center justify-content-center bg-200">
                 <div class="d-none rounded-circle bg-black-25 w-25 h-25"/>
             </div>
         </a>
@@ -58,7 +58,7 @@
 </template>
 <!-- Horizontal layout -->
 <template id="snip_plug_posts_horizontal_template">
-    <figure t-foreach="posts" t-as="p" class="post s_latest_posts_post col-md-6 col-lg-4">
+    <figure t-foreach="posts" t-as="p" class="post snip_blog_post col-md-6 col-lg-4">
         <figcaption>
             <h4 class="mb0"><a t-att-href="'/blog/%s/%s' % (p.blog_id.id, p.id)"><t t-esc="p.name"/></a></h4>
             <h5 class="mt0 mb4" t-field="p.write_date" t-options='{"format": "dd/MM"}' />
@@ -73,9 +73,9 @@
 </template>
 <!-- Card layout -->
 <template id="snip_plug_posts_card_template">
-    <div t-foreach="posts" t-as="p" class="col-md-6 col-lg-4 s_latest_posts_post pb32">
+    <div t-foreach="posts" t-as="p" class="col-md-6 col-lg-4 snip_blog_post pb32">
         <div class="card">
-            <a class="s_latest_posts_post_cover" t-att-href="'/blog/%s/%s' % (p.blog_id.id, p.id)">
+            <a class="snip_blog_post_cover" t-att-href="'/blog/%s/%s' % (p.blog_id.id, p.id)">
                 <t t-call="website.record_cover">
                     <t t-set="_record" t-value="p"/>
                     <t t-set="additionnal_classes" t-value="'loading_container thumb'"/>
@@ -105,24 +105,22 @@
                 <we-button data-select-data-attribute="visits desc">Most viewed</we-button>
             </we-select>
             <we-select string="Layout" data-attribute-name="template">
-                <we-button data-select-data-attribute="website_blog_plug_snippets.snip_plug_posts_list_template" data-select-class="s_latest_posts_list">List</we-button>
+                <we-button data-select-data-attribute="website_blog_plug_snippets.snip_plug_posts_list_template" data-select-class="snip_blog_post_list">List</we-button>
                 <we-button data-select-data-attribute="website_blog_plug_snippets.snip_plug_posts_big_picture_template"
-                    data-select-class="s_latest_posts_big_picture"
+                    data-select-class="snip_blog_post_big_picture"
                     data-name="big_picture_opt">Big Pictures</we-button>
                 <we-button data-select-data-attribute="website_blog_plug_snippets.snip_plug_posts_horizontal_template"
-                    data-select-class="s_latest_posts_horizontal">Horizontal</we-button>
+                    data-select-class="snip_blog_post_horizontal">Horizontal</we-button>
                 <we-button data-select-data-attribute="website_blog_plug_snippets.snip_plug_posts_card_template"
-                    data-select-class="s_latest_posts_card">Cards</we-button>
+                    data-select-class="snip_blog_post_card">Cards</we-button>
             </we-select>
             <we-select string="Hover effect" data-no-widget-refresh="true" data-dependencies="big_picture_opt" class="o_we_inline">
                 <we-button data-select-class="">None</we-button>
-                <we-button data-select-class="s_latest_posts_effect_marley">Marley</we-button>
-                <we-button data-select-class="s_latest_posts_effect_dexter">Dexter</we-button>
-                <we-button data-select-class="s_latest_posts_effect_chico">Silly-Chico</we-button>
+                <we-button data-select-class="snip_blog_post_effect_marley">Marley</we-button>
+                <we-button data-select-class="snip_blog_post_effect_dexter">Dexter</we-button>
+                <we-button data-select-class="snip_blog_post_effect_chico">Silly-Chico</we-button>
             </we-select>
-            <we-checkbox string="Toggle Plug Blogs"
-                         data-name="toggle_plug_filtering"
-                         data-no-preview="true"/>
+            <!-- <we-checkbox string="Toggle Plug Blogs" data-select-data-attribute="false|true" data-attribute-name="tooltipDisplay" data-no-preview="true"/> -->
         </div>
     </xpath>
     <xpath expr="//div[@data-js='layout_column']" position="attributes">
