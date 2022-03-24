@@ -3,10 +3,12 @@ from odoo import models, fields, api, _
 import base64
 import logging
 import urllib.request
+from contextlib import closing
 import os
 import ast
 import json
 import re
+import tempfile
 _logger = logging.getLogger(__name__)
 import traceback
 
@@ -83,3 +85,43 @@ class BlogPost(models.Model):
 
     def _create_attachment(self, datas, name):
         return base64.encodebytes(datas.read())
+
+    def create_manifest(self):
+        manifest_vals = {
+            'name': self.name,
+            'category': self.app_category.name,
+            'website': 'https://www.vertlab.se',
+            'summary': self.app_summary,
+            'author': 'Vertel AB',
+            'version': '1.0',
+            'license': self.app_license,
+            'description': self.app_description,
+            'depends': [],
+            'data': [],
+            'installable': True,
+            'application': True,
+            'qweb': []
+        }
+        user_encode_data = json.dumps(manifest_vals, indent=2).encode('utf-8')
+        temp = tempfile.NamedTemporaryFile(mode='w+b')
+        temp.write(user_encode_data)
+        temp.seek(0)
+        attachment_id = self.env['ir.attachment'].create({
+            'name': '__manifest__.py',
+            'res_name': self.name,
+            'res_model': self._name,
+            'res_id': self.id,
+            'datas': base64.encodebytes(temp.read()),
+        })
+        temp.close()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'ir.attachment',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': self.env.ref('website_blog_app.download_manifest_wizard').id,
+            'res_id': attachment_id.id,
+            'target': 'new',
+            'flags': {'mode': 'readonly'},
+        }

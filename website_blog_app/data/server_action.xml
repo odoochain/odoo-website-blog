@@ -8,5 +8,14 @@
             <field name="state">code</field>
             <field name="code">action = records.sync_module()</field>
         </record>
+
+        <record id="generate_manifest_file" model="ir.actions.server">
+            <field name="name">Generate Manifest</field>
+            <field name="model_id" ref="website_blog_app.model_blog_post"/>
+            <field name="binding_model_id" ref="website_blog.model_blog_post"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">action = records.create_manifest()</field>
+        </record>
     </data>
 </odoo>
