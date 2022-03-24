@@ -52,9 +52,18 @@ class BlogPost(models.Model):
             if icon_data and icon_name:
                 self.app_icon = self._create_attachment(icon_data, icon_name)
             # get banner
-            banner_data, banner_name = self._wget_sync(f"{module_url}/static/images/main_screenshot.png")
-            if banner_data and banner_name:
-                self.app_banner = self._create_attachment(banner_data, banner_name)
+            manifest_obj = urllib.request.urlopen(f"{module_url}/__manifest__.py").read().decode('utf-8')
+            manifest = re.sub(r'(?m)^ *#.*\n?', '', manifest_obj)
+            if manifest:
+                manifest = ast.literal_eval(manifest)
+                manifest_images = manifest.get('images')
+                if manifest_images:
+                    main_screenshot = [image for image in manifest_images if image.endswith('_screenshot.png')]
+                    banner_data, banner_name = self._wget_sync(
+                        f"{module_url}{main_screenshot[0] if main_screenshot else manifest_images[0]}"
+                    )
+                    if banner_data and banner_name:
+                        self.app_banner = self._create_attachment(banner_data, banner_name)
 
             # manifest file
             self._sync_manifest(f"{module_url}/__manifest__.py")

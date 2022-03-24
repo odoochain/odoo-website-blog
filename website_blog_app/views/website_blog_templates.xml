@@ -13,12 +13,12 @@
 
                     <div class="row col-md-12" style="height:400px">
                         <div class="col-md-7 col-xl-6 mb32" style="width:100%;height:100%">
-                            <img class="rounded" t-att-src="'data:image/png;base64,%s' % to_text(blog_post.app_banner)" style="width:100%;height:90%"/>
+                            <div t-field="blog_post.app_banner" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded', 'style': 'width:100%;height:90%'}" t-att-data-blog-id="blog_post.id"/>
                         </div>
                         <div class="col-md-5 col-xl-6 mb32">
                             <div style="display:flex;flex-direction:row;align-items: center;">
                                 <div>
-                                    <img class="rounded" t-att-src="'data:image/png;base64,%s' % to_text(blog_post.app_icon)" style="width:84px;height:84px"/>
+                                    <div t-field="blog_post.app_icon" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded o_image_128_max', 'style': 'width:84px;height:84px'}" t-att-data-blog-id="blog_post.id"/>
                                 </div>
                                 <div style="margin-left: 10px;">
                                     <div t-field="blog_post.name" id="o_wblog_post_name" class="o_editable_no_shadow" data-oe-expression="blog_post.name" t-att-data-blog-id="blog_post.id" placeholder="Blog Post Title"/>
@@ -36,7 +36,11 @@
                                     <thead class="alert-info">
                                         <tr>
                                             <td><b>Category</b></td>
-                                            <td><span><t t-esc="blog_post.app_category.name"/> </span></td>
+                                            <td>
+                                                <span>
+                                                    <div t-field="blog_post.sudo().app_category.name" class="o_editable_no_shadow" data-oe-expression="blog_post.sudo().app_category.name" t-att-data-blog-id="blog_post.id"/>
+                                                </span>
+                                            </td>
                                         </tr>
                                     </thead>
                                     <tbody>
