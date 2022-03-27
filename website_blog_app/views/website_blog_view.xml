@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <field name="website_id" position="after">
                     <field name="is_app"/>
+                    <field name="app_project" attrs="{'invisible': [('is_app', '=', False)]}"/>
                 </field>
             </field>
         </record>
@@ -23,7 +24,7 @@
                             <group>
                                 <field name="is_app" invisible="1"/>
                                 <field name="pod_id"/>
-                                <field name="app_project"/>
+                                <field name="app_project" invisible="1"/>
                                 <field name="app_module"/>
                                 <field name="app_tree"/>
                                 <field name="app_icon"/>

@@ -9,6 +9,7 @@ import ast
 import json
 import re
 import tempfile
+from odoo.tools.translate import html_translate
 _logger = logging.getLogger(__name__)
 import traceback
 
@@ -17,24 +18,29 @@ class Blog(models.Model):
     _inherit = 'blog.blog'
 
     is_app = fields.Boolean(string="Is App")
+    app_project = fields.Char(string="App Project")
 
 
 class BlogPost(models.Model):
     _inherit = 'blog.post'
 
-    is_app = fields.Boolean(string="Is App", related='blog_id.is_app')
+    def _default_description(self):
+        return self.env['ir.ui.view']._render_template('website.s_text_image')
+
+    is_app = fields.Boolean(string="Is App", related="blog_id.is_app")
     pod_id = fields.Integer(string="Pod Id")
-    app_project = fields.Char(string="App Project")
-    app_module = fields.Char(string="App Module")
-    app_tree = fields.Char(string="Branch Tree")
+    app_project = fields.Char(string="App Project", related="blog_id.app_project")
+    app_module = fields.Char(string="App Module", default="l10_se")
+    app_tree = fields.Char(string="Branch Tree", default="14.0")
     app_icon = fields.Binary(string="Icon")
     app_banner = fields.Binary(string="App Banner")
     app_summary = fields.Char(string="App Summary")
-    app_category = fields.Many2one('ir.module.category', string="Category")
-    app_description = fields.Text(string="App Description")
+    app_category = fields.Many2one('ir.module.category', string="Category", default=1)
+    app_description = fields.Text(string="App Description", default="The module description goes here.")
     app_manifest = fields.Char(string="App Manifest")
-    app_license = fields.Char(string="App License")
-    app_index = fields.Html(string="App Index")
+    app_license = fields.Char(string="App License", default="LGPL-3")
+    app_index = fields.Html(string="App Index", translate=html_translate, sanitize_attributes=False,
+                            sanitize_form=False, default=_default_description)
 
     def sync_module(self):
         git_url = self.env['ir.config_parameter'].sudo().get_param('GitHubBaseUrl')
