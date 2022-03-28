@@ -30,7 +30,7 @@ class BlogPost(models.Model):
     is_app = fields.Boolean(string="Is App", related="blog_id.is_app")
     pod_id = fields.Integer(string="Pod Id")
     app_project = fields.Char(string="App Project", related="blog_id.app_project")
-    app_module = fields.Char(string="App Module", default="l10_se")
+    app_module = fields.Char(string="App Module", default="technical name")
     app_tree = fields.Char(string="Branch Tree", default="14.0")
     app_icon = fields.Binary(string="Icon")
     app_banner = fields.Binary(string="App Banner")
