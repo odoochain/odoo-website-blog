@@ -49,6 +49,7 @@
         <record id="download_manifest_wizard" model="ir.ui.view">
             <field name="name">Download Manifest</field>
             <field name="model">ir.attachment</field>
+            <field name="priority">100</field>
             <field name="arch" type="xml">
                 <form string="Download Manifest">
                     <group>
