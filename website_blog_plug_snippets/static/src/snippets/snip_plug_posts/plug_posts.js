@@ -25,7 +25,7 @@ publicWidget.registry.js_get_plug_posts = publicWidget.Widget.extend({
         }
         const template = data.template || 'website_blog_plug_snippets.snip_blog_post_list_template';
         const loading = data.loading === 'true';
-        const order = data.order || 'published_date desc';
+        const order = data.order || 'plug_sequence asc';
 
         this.$target.empty(); // Compatibility with db that saved content inside by mistake
         this.$target.attr('contenteditable', 'False'); // Prevent user edition

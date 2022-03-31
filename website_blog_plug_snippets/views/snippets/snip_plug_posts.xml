@@ -100,9 +100,10 @@
                 <we-button data-select-data-attribute="0">All blogs</we-button>
                 <!-- the blog list will be generated in js -->
             </we-select>
-            <we-select string="Posts" data-no-preview="true" data-attribute-name="order" class="o_we_inline">
+            <we-select string="Order" data-no-preview="true" data-attribute-name="order" class="o_we_inline">
                 <we-button data-select-data-attribute="published_date desc">Latest</we-button>
                 <we-button data-select-data-attribute="visits desc">Most viewed</we-button>
+                <we-button data-select-data-attribute="plug_sequence asc">Sequence</we-button>
             </we-select>
             <we-select string="Layout" data-attribute-name="template">
                 <we-button data-select-data-attribute="website_blog_plug_snippets.snip_plug_posts_list_template" data-select-class="snip_blog_post_list">List</we-button>
