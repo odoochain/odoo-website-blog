@@ -1,0 +1,39 @@
+:root {
+    --vertel-footer-background: #985a8d;
+}
+
+section.v_app_footer {
+    padding: 2rem;
+    background-color: var(--vertel-footer-background);
+    & a,p {
+        color: var(--o-cc3-text) !important;
+    }
+    & .h1 {
+        color: var(--o-cc3-text) !important;
+    }
+
+    .v-footer-desc {
+        font-size: 12px;
+    }
+
+    .v-icon {
+        width: 225px;
+        height: 80px;
+    }
+
+    .v-button {
+        min-width: 200px;
+        min-height: 50px;
+        font-size: 24px;
+        font-weight: 700;
+        background-color: var(--o-cc4-bg);
+        border: 3px solid var(--o-cc3-text);
+        border-radius: 10px;
+        justify-content: center;
+        align-items: center;
+        &:hover{
+            background-color: var(--o-cc2-link);
+            text-decoration: none;
+        }
+    }
+}
