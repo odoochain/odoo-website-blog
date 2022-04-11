@@ -15,4 +15,6 @@ class BlogPost(models.Model):
     _inherit = 'blog.post'
 
     is_plug = fields.Boolean(string='Is Plug Blogpost', default=False)
+    plug_sequence = fields.Integer(string='Plug Sequence')
+    
     
