@@ -52,7 +52,7 @@
                                 <t t-foreach="posts" t-as="blog_post">
                                     <div class="col-lg-4 s_col_no_bgcolor pt16 pb16">
                                         <div class="card bg-white h-100">
-                                            <a t-attf-href="/apps/#{slug(blog_post.blog_id)}/#{slug(blog_post)}" t-attf-class="text-decoration-none d-block #{classes or 'mb-2'}" style="height: 235px;">
+                                            <a t-attf-href="/apps/{{blog_post.blog_id.app_project}}/{{blog_post.app_module}}" t-attf-class="text-decoration-none d-block #{classes or 'mb-2'}" style="height: 235px;">
                                                 <t t-if="blog_post.app_banner">
                                                     <img class="rounded card-img-top" t-att-src="'data:image/png;base64,%s' % to_text(blog_post.app_banner)" t-att-alt="'%s' % blog_post.name"/>
                                                 </t>
@@ -62,7 +62,7 @@
                                             </a>
 
                                             <div class="card-body">
-                                                <a t-attf-href="/apps/#{slug(blog_post.blog_id)}/#{slug(blog_post)}" class="d-block text-reset text-decoration-none o_blog_post_title my-0 h5">
+                                                <a t-attf-href="/apps/{{blog_post.blog_id.app_project}}/{{blog_post.app_module}}" class="d-block text-reset text-decoration-none o_blog_post_title my-0 h5">
                                                     <t t-esc="blog_post.name"/>
                                                 </a>
                                                 <p class="card-text" style="margin-top: 10px;">Vertel AB</p>
@@ -94,9 +94,9 @@
                         <a href="/apps" t-attf-class="nav-link font-weight-bold #{(not blog) and 'active'}">All</a>
                     </li>
                     <li class="nav-item" t-foreach="blogs" t-as="nav_blog">
-                        <a t-attf-href="/apps/#{slug(nav_blog)}"
+                        <a t-attf-href="/apps/{{nav_blog.app_project}}"
                            t-attf-class="nav-link #{(blog and nav_blog.id == blog.id) and 'active' or ''}">
-                            <b t-field="nav_blog.name"/>
+                            <b t-field="nav_blog.app_project"/>
                         </a>
                     </li>
                 </ul>

@@ -6,9 +6,9 @@
                     <nav aria-label="breadcrumb" t-attf-class="breadcrumb flex-nowrap py-0 css_editable_mode_hidden #{additionnal_classes or ''}">
                         <li t-if="len(blogs) &gt; 1" class="breadcrumb-item"><a href="/apps">All Apps</a></li>
                         <li class="breadcrumb-item">
-                            <a t-attf-href="/apps/#{slug(blog)}" t-esc="blog.name"/>
+                            <a t-attf-href="/apps/{{blog.app_project}}" t-esc="blog.app_project"/>
                         </li>
-                        <li class="breadcrumb-item text-truncate active"><span t-esc="blog_post.name"/></li>
+                        <li class="breadcrumb-item text-truncate active"><span t-esc="blog_post.app_module"/></li>
                     </nav>
 
                     <div class="row col-md-12" style="height:400px">
