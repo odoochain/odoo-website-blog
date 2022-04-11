@@ -336,7 +336,6 @@ class AppWebsiteBlog(WebsiteBlog):
         '''/apps/<string:blog_name>''',
     ], type='http', auth="public", website=True, sitemap=True)
     def blog_apps(self, blog_name=None, tag=None, page=1, search=None, **opt):
-        print('blog', blog_name)
         blog = request.env['blog.blog'].search([('app_project', '=', blog_name)], limit=1)
         Blog = request.env['blog.blog']
         if blog and not blog.can_access_from_current_website():
@@ -347,8 +346,7 @@ class AppWebsiteBlog(WebsiteBlog):
         blogs = Blog.search(domain, order="create_date asc, id asc")
 
         if not blog_name and len(blogs) == 1:
-            print("==========")
-            return werkzeug.utils.redirect('/apps/%s' % blogs[0].name, code=302)
+            return werkzeug.utils.redirect('/apps/%s' % blogs[0].app_project, code=302)
             # return werkzeug.utils.redirect('/apps/%s' % slug(blogs[0]), code=302)
 
         date_begin, date_end, state = opt.get('date_begin'), opt.get('date_end'), opt.get('state')
