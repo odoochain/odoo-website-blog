@@ -73,17 +73,14 @@
                                     </tbody>
                               </table>
                             </div>
-
                             <div>
-                                    <div t-field="blog_post.app_description" class="o_editable_no_shadow" data-oe-expression="blog_post.app_description" t-att-data-blog-id="blog_post.id"/>
+                                    <div style="max-height:200px;" t-field="blog_post.app_description" class="overflow-auto  o_editable_no_shadow" data-oe-expression="blog_post.app_description" t-att-data-blog-id="blog_post.id"/>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
             <div itemprop="description" t-field="blog_post.app_index" class="oe_structure oe_empty mt16" id="product_full_description"/>
-
         </t>
     </template>
 
