@@ -13,7 +13,7 @@
 
                     <div class="row col-md-12" style="height:400px">
                         <div class="col-md-7 col-xl-6 mb32" style="width:100%;height:100%">
-                            <div t-field="blog_post.app_banner" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded', 'style': 'width:100%;height:420px !important;'}" t-att-data-blog-id="blog_post.id"/>
+                            <div t-field="blog_post.app_banner" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded', 'style': 'width:100%; !important;'}" t-att-data-blog-id="blog_post.id"/>
                         </div>
                         <div class="col-md-5 col-xl-6 mb32">
                             <div style="display:flex;flex-direction:row;align-items: center;">
