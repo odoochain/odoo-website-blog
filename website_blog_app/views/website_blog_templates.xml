@@ -63,12 +63,9 @@
                                         </tr>
                                         <tr>
                                             <td><b>Website</b></td>
-                                            <td>
-												<a t-attf-href="https://vertel.se/apps/{{blog_post.app_project}}/{{blog_post.app_module}}">https://vertel.se/apps/<t t-esc="blog_post.app_project"/>/<t t-esc="blog_post.app_module"/></a>
-<!--
-												<a rel="nofollow" href="https://vertelab.com/">https://vertelab.com/</a>
--->
-												</td>
+                                            <td>												
+												<a t-attf-href="{{blog_post.app_url}}"><t t-esc="blog_post.app_url"/></a>
+											</td>
                                         </tr>
                                     </tbody>
                               </table>

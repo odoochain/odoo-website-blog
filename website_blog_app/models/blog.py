@@ -33,6 +33,8 @@ class BlogPost(models.Model):
     app_module = fields.Char(string="App Module", default="technical name")
     app_tree = fields.Char(string="Branch Tree", default="14.0")
     app_icon = fields.Binary(string="Icon")
+    
+    app_url = fields.Char(string="Website", compute="_get_app_url")
     app_banner = fields.Binary(string="App Banner")
     app_summary = fields.Char(string="App Summary")
     app_category = fields.Many2one('ir.module.category', string="Category", default=1)
@@ -41,9 +43,16 @@ class BlogPost(models.Model):
     app_license = fields.Char(string="App License", default="LGPL-3")
     app_index = fields.Html(string="App Index", translate=html_translate, sanitize_attributes=False,
                             sanitize_form=False, default=_default_description)
-
+                            
+    @api.depends('app_module', 'blog_id.app_project')
+    def _get_app_url(self):
+        for b in self:
+            b.app_url = "https://vertel.se/apps/"+b.blog_id.app_project+"/"+b.app_module
+		
+		
     def sync_module(self):
         git_url = self.env['ir.config_parameter'].sudo().get_param('GitHubBaseUrl')
+        			
         if not git_url:
             raise UserError(_("Git URL is not set"))
         if not self.app_project:
@@ -51,7 +60,8 @@ class BlogPost(models.Model):
         if not self.app_module:
             raise UserError(_("No Module was specified"))
         if self.app_project and self.app_module:
-            module_url = f"{git_url}/{self.app_project}/raw/{self.app_tree}/{self.app_module}"
+            module_url = f"{git_url}/{blog_post.app_project}/{blog_post.app_module}/{self.app_module}"
+            
             # get icon
 
             icon_data, icon_name = self._wget_sync(f"{module_url}/static/description/icon.png")
@@ -140,3 +150,4 @@ class BlogPost(models.Model):
             'target': 'new',
             'flags': {'mode': 'readonly'},
         }
+
