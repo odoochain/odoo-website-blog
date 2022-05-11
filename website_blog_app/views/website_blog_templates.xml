@@ -5,9 +5,11 @@
                 <div class="container">
                     <nav aria-label="breadcrumb" t-attf-class="breadcrumb flex-nowrap py-0 css_editable_mode_hidden #{additionnal_classes or ''}">
                         <li t-if="len(blogs) &gt; 1" class="breadcrumb-item"><a href="/apps">All Apps</a></li>
+<!--
                         <li class="breadcrumb-item">
                             <a t-attf-href="/apps/{{blog.name}}" t-esc="blog.name"/>
                         </li>
+-->
                         <li class="breadcrumb-item">
                             <a t-attf-href="/apps/{{blog.app_project}}" t-esc="blog.app_project"/>
                         </li>

@@ -34,7 +34,7 @@ class BlogPost(models.Model):
     app_tree = fields.Char(string="Branch Tree", default="14.0")
     app_icon = fields.Binary(string="Icon")
     
-    app_url = fields.Char(string="Website", compute="_get_app_url")
+    app_url = fields.Char(string="Website", compute="_get_app_url", default="vertel")
     app_banner = fields.Binary(string="App Banner")
     app_summary = fields.Char(string="App Summary")
     app_category = fields.Many2one('ir.module.category', string="Category", default=1)
@@ -45,11 +45,12 @@ class BlogPost(models.Model):
                             sanitize_form=False, default=_default_description)
                             
     @api.depends('app_module', 'blog_id.app_project')
-    def _get_app_url(self):
+    def _get_app_url(self):	 
         for b in self:
-            b.app_url = "https://vertel.se/apps/"+b.blog_id.app_project+"/"+b.app_module
-		
-		
+           if b.blog_id.app_project and b.app_module:
+               b.app_url = "https://vertel.se/apps/"+b.blog_id.app_project+"/"+b.app_module
+ 
+ 
     def sync_module(self):
         git_url = self.env['ir.config_parameter'].sudo().get_param('GitHubBaseUrl')
         			

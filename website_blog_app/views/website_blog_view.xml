@@ -28,9 +28,7 @@
                                 <field name="app_module"/>
                                 <field name="app_tree"/>
                                 <field name="app_icon"/>
-
-                                <field name="app_url" readonly="1" />
-
+                                <field name="app_url" /> <!--test-->
                             </group>
                             <group>
                                 <field name="app_banner"/>
