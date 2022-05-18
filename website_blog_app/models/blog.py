@@ -62,7 +62,7 @@ class BlogPost(models.Model):
         if not self.app_module:
             raise UserError(_("No Module was specified"))
         if self.app_project and self.app_module:
-            module_url = f"{git_url}/{blog_post.app_project}/{blog_post.app_module}/{self.app_module}"
+            module_url = f"{git_url}/{self.app_project}/{self.app_module}/{self.app_module}"
             
             # get icon
 
