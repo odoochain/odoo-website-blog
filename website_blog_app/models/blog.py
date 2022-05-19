@@ -29,6 +29,7 @@ class BlogPost(models.Model):
 
     is_app = fields.Boolean(string="Is App", related="blog_id.is_app")
     pod_id = fields.Integer(string="Pod Id")
+    sequence = fields.Integer(string="Sequence", default="1000")
     app_project = fields.Char(string="App Project", related="blog_id.app_project")
     app_module = fields.Char(string="App Module", default="technical name")
     app_tree = fields.Char(string="Branch Tree", default="14.0")
@@ -62,7 +63,7 @@ class BlogPost(models.Model):
             raise UserError(_("No Module was specified"))
         for module in self:
             if module.app_project and module.app_module:
-                module_url = f"{git_url}/{blog_post.app_project}/{blog_post.app_module}/{self.app_module}"
+                module_url = f"{git_url}/{module.app_project}/{module.app_module}/{module.app_module}"
             
                 # get icon
 
