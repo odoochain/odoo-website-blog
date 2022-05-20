@@ -54,6 +54,7 @@ class BlogPost(models.Model):
  
     def sync_module(self):
         git_url = self.env['ir.config_parameter'].sudo().get_param('GitHubBaseUrl')
+        raw_git_url = self.env['ir.config_parameter'].sudo().get_param('RawGitHubBaseUrl')
         			
         if not git_url:
             raise UserError(_("Git URL is not set"))
@@ -63,15 +64,15 @@ class BlogPost(models.Model):
             raise UserError(_("No Module was specified"))
         for module in self:
             if module.app_project and module.app_module:
-                module_url = f"{git_url}/{module.app_project}/{module.app_module}/{module.app_module}"
-            
+                module_url = f"{git_url}/{module.app_project}/tree/{module.app_tree}/{module.app_module}"
+                raw_module_url = f"{raw_git_url}/{module.app_project}/{module.app_tree}/{module.app_module}"
                 # get icon
 
                 icon_data, icon_name = module._wget_sync(f"{module_url}/static/description/icon.png")
                 if icon_data and icon_name:
                     module.app_icon = module._create_attachment(icon_data, icon_name)
                 # get banner
-                manifest_obj = urllib.request.urlopen(f"{module_url}/__manifest__.py").read().decode('utf-8')
+                manifest_obj = urllib.request.urlopen(f"{raw_module_url}/__manifest__.py").read().decode('utf-8')
                 manifest = re.sub(r'(?m)^ *#.*\n?', '', manifest_obj)
                 if manifest:
                     manifest = ast.literal_eval(manifest)
@@ -85,7 +86,7 @@ class BlogPost(models.Model):
                             module.app_banner = module._create_attachment(banner_data, banner_name)
 
                 # manifest file
-                module._sync_manifest(f"{module_url}/__manifest__.py")
+                module._sync_manifest(f"{raw_module_url}/__manifest__.py")
 
     def _sync_manifest(self, manifest_url):
         try:
