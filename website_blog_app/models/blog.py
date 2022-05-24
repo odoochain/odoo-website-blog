@@ -119,10 +119,10 @@ class BlogPost(models.Model):
         manifest_vals = {
             'name': self.name,
             'category': self.app_category.name,
-            'website': 'https://www.vertlab.se',
+            'website': 'https://www.vertl.se',
             'summary': self.app_summary,
             'author': 'Vertel AB',
-            'version': '1.0',
+            'version': '14.0.0.0.1',
             'license': self.app_license,
             'description': self.app_description,
             'depends': [],
