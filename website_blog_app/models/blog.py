@@ -119,7 +119,7 @@ class BlogPost(models.Model):
         manifest_vals = {
             'name': self.name,
             'category': self.app_category.name,
-            'website': 'https://vertel.se',
+            'website': 'https://vertel.se/apps/project/module',
             'summary': self.app_summary,
             'author': 'Vertel AB',
             'version': '14.0.0.0.1',
