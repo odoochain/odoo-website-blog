@@ -29,6 +29,7 @@ class BlogPost(models.Model):
 
     is_app = fields.Boolean(string="Is App", related="blog_id.is_app")
     pod_id = fields.Integer(string="Pod Id")
+    sequence = fields.Integer(string="Sequence", default="1000")
     app_project = fields.Char(string="App Project", related="blog_id.app_project")
     app_module = fields.Char(string="App Module", default="technical name")
     app_tree = fields.Char(string="Branch Tree", default="14.0")
@@ -53,6 +54,7 @@ class BlogPost(models.Model):
  
     def sync_module(self):
         git_url = self.env['ir.config_parameter'].sudo().get_param('GitHubBaseUrl')
+        raw_git_url = self.env['ir.config_parameter'].sudo().get_param('RawGitHubBaseUrl')
         			
         if not git_url:
             raise UserError(_("Git URL is not set"))
@@ -60,30 +62,31 @@ class BlogPost(models.Model):
             raise UserError(_("No Git Project was specified"))
         if not self.app_module:
             raise UserError(_("No Module was specified"))
-        if self.app_project and self.app_module:
-            module_url = f"{git_url}/{self.app_project}/{self.app_module}/{self.app_module}"
-            
-            # get icon
+        for module in self:
+            if module.app_project and module.app_module:
+                module_url = f"{git_url}/{module.app_project}/tree/{module.app_tree}/{module.app_module}"
+                raw_module_url = f"{raw_git_url}/{module.app_project}/{module.app_tree}/{module.app_module}"
+                # get icon
 
-            icon_data, icon_name = self._wget_sync(f"{module_url}/static/description/icon.png")
-            if icon_data and icon_name:
-                self.app_icon = self._create_attachment(icon_data, icon_name)
-            # get banner
-            manifest_obj = urllib.request.urlopen(f"{module_url}/__manifest__.py").read().decode('utf-8')
-            manifest = re.sub(r'(?m)^ *#.*\n?', '', manifest_obj)
-            if manifest:
-                manifest = ast.literal_eval(manifest)
-                manifest_images = manifest.get('images')
-                if manifest_images:
-                    main_screenshot = [image for image in manifest_images if image.endswith('_screenshot.png')]
-                    banner_data, banner_name = self._wget_sync(
-                        f"{module_url}{main_screenshot[0] if main_screenshot else manifest_images[0]}"
-                    )
-                    if banner_data and banner_name:
-                        self.app_banner = self._create_attachment(banner_data, banner_name)
+                icon_data, icon_name = module._wget_sync(f"{module_url}/static/description/icon.png")
+                if icon_data and icon_name:
+                    module.app_icon = module._create_attachment(icon_data, icon_name)
+                # get banner
+                manifest_obj = urllib.request.urlopen(f"{raw_module_url}/__manifest__.py").read().decode('utf-8')
+                manifest = re.sub(r'(?m)^ *#.*\n?', '', manifest_obj)
+                if manifest:
+                    manifest = ast.literal_eval(manifest)
+                    manifest_images = manifest.get('images')
+                    if manifest_images:
+                        main_screenshot = [image for image in manifest_images if image.endswith('_screenshot.png')]
+                        banner_data, banner_name = self._wget_sync(
+                            f"{module_url}{main_screenshot[0] if main_screenshot else manifest_images[0]}"
+                        )
+                        if banner_data and banner_name:
+                            module.app_banner = module._create_attachment(banner_data, banner_name)
 
-            # manifest file
-            self._sync_manifest(f"{module_url}/__manifest__.py")
+                # manifest file
+                module._sync_manifest(f"{raw_module_url}/__manifest__.py")
 
     def _sync_manifest(self, manifest_url):
         try:
@@ -116,10 +119,10 @@ class BlogPost(models.Model):
         manifest_vals = {
             'name': self.name,
             'category': self.app_category.name,
-            'website': 'https://www.vertlab.se',
+            'website': 'https://vertel.se/apps/project/module',
             'summary': self.app_summary,
             'author': 'Vertel AB',
-            'version': '1.0',
+            'version': '14.0.0.0.1',
             'license': self.app_license,
             'description': self.app_description,
             'depends': [],

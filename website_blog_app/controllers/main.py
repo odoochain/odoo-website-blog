@@ -194,9 +194,13 @@ class AppWebsiteBlog(WebsiteBlog):
 
         # prepare domain
         domain = request.website.website_domain()
-
-        if blog:
+        order="is_published desc, post_date desc, id asc"
+        if blog and blog.content:
             domain += [('blog_id', '=', blog.id), ('is_app', '=', is_app)]
+        if is_app:
+            order = "is_published desc, sequence asc, post_date desc, id asc"
+            
+            
 
         if date_begin and date_end:
             domain += [("post_date", ">=", date_begin), ("post_date", "<=", date_end)]
@@ -230,7 +234,7 @@ class AppWebsiteBlog(WebsiteBlog):
         offset = (page - 1) * self._blog_post_per_page
         first_post = BlogPost
         if not blog:
-            first_post = BlogPost.search(domain + [('website_published', '=', True), ('is_app', '=', is_app)], order="post_date desc, id asc", limit=1)
+            first_post = BlogPost.search(domain + [('website_published', '=', True), ('is_app', '=', is_app)], order=order, limit=1)
             if use_cover and not fullwidth_cover:
                 offset += 1
 
@@ -238,7 +242,7 @@ class AppWebsiteBlog(WebsiteBlog):
             tags_like_search = BlogTag.search([('name', 'ilike', search)])
             domain += ['|', '|', '|', ('author_name', 'ilike', search), ('name', 'ilike', search), ('content', 'ilike', search), ('tag_ids', 'in', tags_like_search.ids)]
         domain += [('is_app', '=', is_app)]
-        posts = BlogPost.search(domain, offset=offset, limit=self._blog_post_per_page, order="is_published desc, post_date desc, id asc")
+        posts = BlogPost.search(domain, offset=offset, limit=self._blog_post_per_page, order=order)
         total = BlogPost.search_count(domain)
 
         pager = request.website.pager(
@@ -347,6 +351,7 @@ class AppWebsiteBlog(WebsiteBlog):
         domain = request.website.website_domain()
         domain += [('is_app', '=', True)]
         blogs = Blog.search(domain, order="create_date asc, id asc")
+        all_blogs = Blog.search([('is_app', '=', True)], order="create_date asc, id asc")
 
         if not blog_name and len(blogs) == 1:
             return werkzeug.utils.redirect('/apps/%s' % blogs[0].app_project, code=302)
