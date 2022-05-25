@@ -68,7 +68,10 @@ class AppWebsiteBlog(WebsiteBlog):
         all_post = BlogPost.search(blog_post_domain)
 
         if blog_post not in all_post:
-            return request.redirect("/blog/%s" % (slug(blog_post.blog_id)))
+            if blog_post.blog_id:
+                return request.redirect("/blog/%s" % (slug(blog_post.blog_id)))
+            else: #  Add redirect so that visitors does not get an error message if the blog_id does not exist.
+                return request.redirect("/")
 
         # should always return at least the current post
         all_post_ids = all_post.ids
