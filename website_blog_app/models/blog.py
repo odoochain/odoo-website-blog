@@ -48,8 +48,11 @@ class BlogPost(models.Model):
     @api.depends('app_module', 'blog_id.app_project')
     def _get_app_url(self):	 
         for b in self:
-           if b.blog_id.app_project and b.app_module:
+            if b.blog_id.app_project and b.app_module:
                b.app_url = "https://vertel.se/apps/"+b.blog_id.app_project+"/"+b.app_module
+            else:
+                b.app_url = False
+
  
  
     def sync_module(self):

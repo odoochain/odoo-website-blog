@@ -56,7 +56,7 @@ class AppWebsiteBlog(WebsiteBlog):
                             date_end=date_end)
 
         if not blog_post.blog_id.id == blog.id:
-            return request.redirect("/blog/%s/%s" % (slug(blog_post.blog_id), slug(blog_post)), code=301)
+            raise werkzeug.exceptions.NotFound()
 
         tags = request.env['blog.tag'].search([])
 
@@ -69,9 +69,9 @@ class AppWebsiteBlog(WebsiteBlog):
 
         if blog_post not in all_post:
             if blog_post.blog_id:
-                return request.redirect("/blog/%s" % (slug(blog_post.blog_id)))
+                raise werkzeug.exceptions.NotFound()
             else: #  Add redirect so that visitors does not get an error message if the blog_id does not exist.
-                return request.redirect("/")
+                raise werkzeug.exceptions.NotFound()
 
         # should always return at least the current post
         all_post_ids = all_post.ids
