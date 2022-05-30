@@ -34,7 +34,7 @@
     'contributor': '',
     'maintainer': 'Vertel AB',
     'repository': 'https://github.com/vertelab/odoo-website-blog',
-    # 'depends': ['website_blog'],
+    'depends': ['website_blog'],
     'data': [
         'views/snippets/snippets.xml',
         'views/website_blog_view.xml',
