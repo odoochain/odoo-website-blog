@@ -71,7 +71,7 @@ class BlogPost(models.Model):
                 raw_module_url = f"{raw_git_url}/{module.app_project}/{module.app_tree}/{module.app_module}"
                 # get icon
 
-                icon_data, icon_name = module._wget_sync(f"{module_url}/static/description/icon.png")
+                icon_data, icon_name = module._wget_sync(f"{raw_module_url}/static/description/icon.png")
                 if icon_data and icon_name:
                     module.app_icon = module._create_attachment(icon_data, icon_name)
                 # get banner
@@ -81,9 +81,9 @@ class BlogPost(models.Model):
                     manifest = ast.literal_eval(manifest)
                     manifest_images = manifest.get('images')
                     if manifest_images:
-                        main_screenshot = [image for image in manifest_images if image.endswith('_screenshot.png')]
+                        main_screenshot = [image for image in manifest_images if image.endswith('_screenshot.png' or 'banner.png')]
                         banner_data, banner_name = self._wget_sync(
-                            f"{module_url}{main_screenshot[0] if main_screenshot else manifest_images[0]}"
+                            f"{raw_module_url}{main_screenshot[0] if main_screenshot else manifest_images[0]}"
                         )
                         if banner_data and banner_name:
                             module.app_banner = module._create_attachment(banner_data, banner_name)
