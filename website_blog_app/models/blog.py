@@ -33,10 +33,10 @@ class BlogPost(models.Model):
     app_project = fields.Char(string="App Project", related="blog_id.app_project")
     app_module = fields.Char(string="App Module", default="technical name")
     app_tree = fields.Char(string="Branch Tree", default="14.0")
-    app_icon = fields.Binary(string="Icon")
+    app_icon = fields.Image(string="Icon")
     
     app_url = fields.Char(string="Website", compute="_get_app_url", default="vertel")
-    app_banner = fields.Binary(string="App Banner")
+    app_banner = fields.Image(string="App Banner")
     app_summary = fields.Char(string="App Summary")
     app_category = fields.Many2one('ir.module.category', string="Category", default=1)
     app_description = fields.Text(string="App Description", default="The module description goes here.")
@@ -70,6 +70,8 @@ class BlogPost(models.Model):
                 module_url = f"{git_url}/{module.app_project}/tree/{module.app_tree}/{module.app_module}"
                 raw_module_url = f"{raw_git_url}/{module.app_project}/{module.app_tree}/{module.app_module}"
                 # get icon
+                _logger.warning("--------->> module_url: " & module_url )
+                _logger.warning("--------->> raw_module_url: " & raw_module_url )
 
                 icon_data, icon_name = module._wget_sync(f"{raw_module_url}/static/description/icon.png")
                 if icon_data and icon_name:

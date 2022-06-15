@@ -33,16 +33,16 @@
                     <page name="is_app" string="Is App" attrs="{'invisible': [('is_app', '=', False)]}">
                         <group>
                             <group>
+                                <field name="app_icon" widget='image'/>
                                 <field name="is_app" invisible="1"/>
                                 <field name="sequence"/>
                                 <field name="app_project" invisible="1"/>
                                 <field name="app_module"/>
                                 <field name="app_tree"/>
-                                <field name="app_icon"/>
                                 <field name="app_url" /> <!--test-->
                             </group>
                             <group>
-                                <field name="app_banner"/>
+                                <field name="app_banner" widget='image' />
                                 <field name="app_summary"/>
                                 <field name="app_category"/>
                                 <field name="app_manifest"/>
