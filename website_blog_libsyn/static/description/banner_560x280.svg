@@ -17,11 +17,7 @@
    id="SVGRoot"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="banner_560x280.svg"
-<<<<<<< HEAD
-   inkscape:export-filename="/usr/share/odoo-record-keeping/record_keeping/static/description/banner.png"
-=======
-   inkscape:export-filename="/usr/share/odoo-website-blog/website_blog_app/static/description/banner.png"
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
+   inkscape:export-filename="/usr/share/odoo-website-blog/website_blog_libsyn/static/description/banner.png"
    inkscape:export-xdpi="92.61972"
    inkscape:export-ydpi="92.61972">
   <defs
@@ -43,24 +39,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-<<<<<<< HEAD
-     inkscape:cx="178.00923"
-=======
-     inkscape:cx="204.98237"
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
+     inkscape:cx="131.13888"
      inkscape:cy="56.222145"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1697"
      inkscape:window-height="773"
-<<<<<<< HEAD
-     inkscape:window-x="223"
-     inkscape:window-y="153"
-=======
-     inkscape:window-x="274"
-     inkscape:window-y="175"
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
+     inkscape:window-x="273"
+     inkscape:window-y="264"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -140,11 +127,7 @@
          x="359.0531"
          y="54.822594"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.66666603px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.99999994px"
-<<<<<<< HEAD
-         id="tspan2047">Record Keeping</tspan></text>
-=======
-         id="tspan2047">Website Blog App</tspan></text>
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
+         id="tspan2047">Website Blog Libsyn</tspan></text>
     <flowRoot
        xml:space="preserve"
        id="flowRoot892"
@@ -157,19 +140,6 @@
            y="-57" /></flowRegion><flowPara
          id="flowPara898"></flowPara></flowRoot>    <text
        xml:space="preserve"
-<<<<<<< HEAD
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333206px;line-height:1.25;font-family:'Futura PT';-inkscape-font-specification:'Futura PT, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="275"
-       y="155"
-       id="text893"><tspan
-         sodipodi:role="line"
-         id="tspan891"
-         x="275"
-         y="155"></tspan></text>
-    <text
-       xml:space="preserve"
-=======
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="332.03513"
        y="154.41"
@@ -178,18 +148,12 @@
          id="tspan2037"
          x="332.03513"
          y="154.41"
-<<<<<<< HEAD
-         style="stroke-width:0.99999994px">record_keeping</tspan><tspan
-=======
          style="stroke-width:0.99999994px">website_blog</tspan><tspan
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
          sodipodi:role="line"
          x="332.03513"
          y="173.16"
          style="stroke-width:0.99999994px"
          id="tspan2041" /></text>
-<<<<<<< HEAD
-=======
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333206px;line-height:1.25;font-family:'Futura PT';-inkscape-font-specification:'Futura PT, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
@@ -201,6 +165,5 @@
          x="281.16669"
          y="150"
          style="fill:#000000"></tspan></text>
->>>>>>> 03d68ea82a930973f8c2206d37431d8693e07314
   </g>
 </svg>
