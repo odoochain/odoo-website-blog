@@ -58,7 +58,9 @@ class BlogPost(models.Model):
     def sync_module(self):
         git_url = self.env['ir.config_parameter'].sudo().get_param('GitHubBaseUrl')
         raw_git_url = self.env['ir.config_parameter'].sudo().get_param('RawGitHubBaseUrl')
-        			
+
+        if not raw_git_url:
+            raise UserError(_("Raw Git URL is not set"))
         if not git_url:
             raise UserError(_("Git URL is not set"))
         if not self.app_project:
@@ -66,12 +68,18 @@ class BlogPost(models.Model):
         if not self.app_module:
             raise UserError(_("No Module was specified"))
         for module in self:
+            if not module.app_project:
+                raise UserError(_("No Git Project was specified %s" % module.name))
+            if not module.app_module:
+                raise UserError(_("No Module was specified %s" % module.name))
+            if not module.app_tree:
+                raise UserError(_("No Module Tree was specified %s" % module.name))
             if module.app_project and module.app_module:
                 module_url = f"{git_url}/{module.app_project}/tree/{module.app_tree}/{module.app_module}"
                 raw_module_url = f"{raw_git_url}/{module.app_project}/{module.app_tree}/{module.app_module}"
                 # get icon
-                _logger.warning("--------->> module_url: " & module_url )
-                _logger.warning("--------->> raw_module_url: " & raw_module_url )
+                _logger.warning("--------->> module_url: %s" % module_url )
+                _logger.warning("--------->> raw_module_url: %s" % raw_module_url )
 
                 icon_data, icon_name = module._wget_sync(f"{raw_module_url}/static/description/icon.png")
                 if icon_data and icon_name:
