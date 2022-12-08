@@ -1,5 +1,5 @@
-odoo-website-blog / website_blog_app
-2022-05-30
+odoo-website-blog / website_blog_plug_snippet
+2022-12-08
 
 Be aware of these!
 [project]/[module]/static/description/banner.png
@@ -19,8 +19,13 @@ HEX
 
 #8105a7
 
-
 Source: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool
+
+Edit image:
+Ubuntu = Pinta, https://www.pinta-project.com/howto/installing-pinta
+Ubuntu = Pinta, "permission denied", https://askubuntu.com/questions/1321337/pinta-can-not-open-file-permission-denied
+
+Windows = Paint.net , https://www.getpaint.net/
 
 Guide:
 1. Use Inkscape to create a colored background. (Import)
