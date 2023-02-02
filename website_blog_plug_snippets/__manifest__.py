@@ -34,7 +34,7 @@
     'contributor': '',
     'maintainer': 'Vertel AB',
     'repository': 'https://github.com/vertelab/odoo-website-blog',
-    'description': "",
+    'description': '',
     'depends': ['website_blog'],
     'data': [
         'views/website_blog_view.xml',
@@ -44,3 +44,5 @@
     'installable': True,
     'application': True,
 }
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

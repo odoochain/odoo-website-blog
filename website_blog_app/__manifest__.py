@@ -25,7 +25,9 @@
     # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
     'summary': 'Website Blog App',
     'category': 'Website',
-    'description': '',
+    'description': """
+    Website Blog App
+    """,
     #'sequence': '200',
     'author': 'Vertel AB',
     'website': 'https://vertel.se/apps/odoo-website-blog/website_blog_app',
@@ -48,3 +50,4 @@
     'installable': True,
     'application': True,
 }
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
