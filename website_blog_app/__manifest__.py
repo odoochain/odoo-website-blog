@@ -38,6 +38,7 @@
     'repository': 'https://github.com/vertelab/odoo-website-blog',
     'depends': ['website_blog'],
     'data': [
+	'security/ir.model.access.csv',
         'views/snippets/snippets.xml',
         'views/website_blog_view.xml',
         'views/website_blog_templates.xml',
