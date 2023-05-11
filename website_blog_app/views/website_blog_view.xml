@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <field name="website_id" position="after">
                     <field name="is_app"/>
-                    <field name="app_project" attrs="{'invisible': [('is_app', '=', False)]}"/>
+                    <field name="app_project" attrs="{'invisible': [('is_app', '=', False)], 'required':[('is_app', '=', True)]}"/>
                 </field>
             </field>
         </record>

@@ -17,6 +17,7 @@ from odoo.osv import expression
 from odoo.tools import html2plaintext
 from odoo.tools.misc import get_lang
 from odoo.tools import sql
+import logging
 
 
 class AppWebsiteBlog(WebsiteBlog):
@@ -112,7 +113,7 @@ class AppWebsiteBlog(WebsiteBlog):
     ], type='http', auth="public", website=True, sitemap=True)
     def blog_post(self, blog, blog_post, tag_id=None, page=1, enable_editor=None, **post):
         """ Prepare all values to display the blog.
-
+        
         :return dict values: values for the templates, containing
 
          - 'blog_post': browse of the current post
@@ -242,6 +243,8 @@ class AppWebsiteBlog(WebsiteBlog):
             tags_like_search = BlogTag.search([('name', 'ilike', search)])
             domain += ['|', '|', '|', ('author_name', 'ilike', search), ('name', 'ilike', search), ('content', 'ilike', search), ('tag_ids', 'in', tags_like_search.ids)]
         domain += [('is_app', '=', is_app)]
+        if blog:
+            domain += [('blog_id','=',blog.id)]
         posts = BlogPost.search(domain, offset=offset, limit=self._blog_post_per_page, order=order)
         total = BlogPost.search_count(domain)
 
@@ -328,21 +331,24 @@ class AppWebsiteBlog(WebsiteBlog):
                                           date_end=date_end, search=search)
         else:
             values['blog_url'] = QueryURL('/blog', ['tag'], date_begin=date_begin, date_end=date_end, search=search)
-
         return request.render("website_blog.blog_post_short", values)
-
+        
     @http.route([
         '/apps',
         '/apps/page/<int:page>',
         '/apps/tag/<string:tag>',
         '/apps/tag/<string:tag>/page/<int:page>',
         '''/apps/<model("blog.blog"):blog>''',
-        '''/apps/<model("blog.blog"):blog>/page/<int:page>''',
-        '''/apps/<model("blog.blog"):blog>/tag/<string:tag>''',
-        '''/apps/<model("blog.blog"):blog>/tag/<string:tag>/page/<int:page>''',
+        # ~ '''/apps/<model("blog.blog"):blog>/page/<int:page>''',
+        # ~ '''/apps/<model("blog.blog"):blog>/tag/<string:tag>''',
+        # ~ '''/apps/<model("blog.blog"):blog>/tag/<string:tag>/page/<int:page>''',
+        '''/apps/<string:blog_name>/page/<int:page>''',
+        '''/apps/<string:blog_name>/tag/<string:tag>''',
+        '''/apps/<string:blog_name>/tag/<string:tag>/page/<int:page>''',
         '''/apps/<string:blog_name>''',
     ], type='http', auth="public", website=True, sitemap=True)
     def blog_apps(self, blog_name=None, tag=None, page=1, search=None, **opt):
+        
         blog = request.env['blog.blog'].search([('app_project', '=', blog_name)], limit=1)
         Blog = request.env['blog.blog']
         if blog and not blog.can_access_from_current_website():
@@ -381,5 +387,4 @@ class AppWebsiteBlog(WebsiteBlog):
                                           date_end=date_end, search=search)
         else:
             values['blog_url'] = QueryURL('/apps', ['tag'], date_begin=date_begin, date_end=date_end, search=search)
-
         return request.render("website_blog_app.blog_app_post", values)
