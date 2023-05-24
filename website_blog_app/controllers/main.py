@@ -19,6 +19,7 @@ from odoo.tools.misc import get_lang
 from odoo.tools import sql
 import logging
 
+_logger = logging.getLogger(__name__)
 
 class AppWebsiteBlog(WebsiteBlog):
 
@@ -243,8 +244,10 @@ class AppWebsiteBlog(WebsiteBlog):
             tags_like_search = BlogTag.search([('name', 'ilike', search)])
             domain += ['|', '|', '|', ('author_name', 'ilike', search), ('name', 'ilike', search), ('content', 'ilike', search), ('tag_ids', 'in', tags_like_search.ids)]
         domain += [('is_app', '=', is_app)]
-        if blog:
+        if blog and blog.id != 1:
             domain += [('blog_id','=',blog.id)]
+            # ~ _logger.error(f"{blog.id=}")
+            # ~ _logger.error(f"{domain=}")
         posts = BlogPost.search(domain, offset=offset, limit=self._blog_post_per_page, order=order)
         total = BlogPost.search_count(domain)
 
@@ -254,6 +257,7 @@ class AppWebsiteBlog(WebsiteBlog):
             page=page,
             step=self._blog_post_per_page,
         )
+        # ~ _logger.error(f"{request.httprequest.path.partition('/page/')[0]=}")
 
         if not blogs:
             all_tags = request.env['blog.tag']
@@ -350,6 +354,7 @@ class AppWebsiteBlog(WebsiteBlog):
     def blog_apps(self, blog_name=None, tag=None, page=1, search=None, **opt):
         
         blog = request.env['blog.blog'].search([('app_project', '=', blog_name)], limit=1)
+        # ~ _logger.error(f"{blog=}")
         Blog = request.env['blog.blog']
         if blog and not blog.can_access_from_current_website():
             raise werkzeug.exceptions.NotFound()
