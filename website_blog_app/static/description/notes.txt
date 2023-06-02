@@ -1,5 +1,5 @@
 odoo-website-blog / website_blog_app
-2022-12-08
+2023-06-01
 
 Be aware of these!
 [project]/[module]/static/description/banner.png
@@ -34,3 +34,24 @@ Guide:
 4. Save in ordinary / plain svg format.
 5. In Inkscape, choose Generate PNG image and "Export as...".
 6. Write a filename of choice and choose "Export".
+
+Make it right the first time! :-)
+
+grep -sR "'name':" */*__.py
+grep -sR "'version':" */*__.py
+grep -sR "'category':" */*__.py
+grep -sR "'summary':" */*__.py
+grep -sR "'description':" */*__.py
+grep -sR "'description':" */*/*__.py -n | grep "40"
+grep -sR "'depends':" */*__.py
+grep -sR "'repository':" */*__.py
+grep -sR "'website':" */*__.py
+ls | wc -l
+grep -sR "'website':" */*__.py | tr "'" " "
+
+Find the latest project:
+grep -r "2023-04-*" odoo-*/*/static/description/notes.txt
+grep -r "2023-04-*" */static/description/notes.txt
+
+
+
