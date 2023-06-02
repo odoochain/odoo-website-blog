@@ -25,7 +25,8 @@
     # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
     'summary': 'Website Blog App',
     'category': 'Website',
-    'description': '',
+    'description': """
+    """,
     #'sequence': '1'
     'author': 'Vertel AB',
     'website': 'https://vertel.se/apps/odoo-website-blog/website_blog_plug_snippets',
@@ -34,7 +35,6 @@
     'contributor': '',
     'maintainer': 'Vertel AB',
     'repository': 'https://github.com/vertelab/odoo-website-blog',
-    'description': '',
     'depends': ['website_blog'],
     'data': [
         'views/website_blog_view.xml',
