@@ -35,7 +35,7 @@ class BlogPost(models.Model):
     app_tree = fields.Char(string="Branch Tree", default="14.0")
     app_icon = fields.Image(string="Icon")
     
-    app_url = fields.Char(string="Website", compute="_get_app_url", default="vertel")
+    app_url = fields.Char(string="Website Url", compute="_get_app_url", default="vertel")
     app_banner = fields.Image(string="App Banner")
     app_summary = fields.Char(string="App Summary")
     app_category = fields.Many2one('ir.module.category', string="Category", default=1)
