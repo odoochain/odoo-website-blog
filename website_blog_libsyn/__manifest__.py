@@ -25,7 +25,8 @@
     # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
     'summary': 'Add Libsyn podcast to blog',
     'category': 'Website',
-    'description': '',
+    'description': """
+    """,
     #'sequence': '200',
     'author': 'Vertel AB',
     'website': 'https://vertel.se/apps/odoo-website-blog/website_blog_libsyn',
@@ -34,7 +35,6 @@
     'contributor': '',
     'maintainer': 'Vertel AB',
     'repository': 'https://github.com/vertelab/odoo-website-blog',
-    'description': "",
     'depends': ['website_blog'],
     'data': [
         'views/website_blog_views.xml',
@@ -43,3 +43,4 @@
     'installable': True,
     'application': True,
 }
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
